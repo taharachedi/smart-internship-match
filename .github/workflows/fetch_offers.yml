@@ -21,23 +21,23 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Check secrets (length only)
-        env:
-          FRANCETRAVAIL_CLIENT_ID: ${{ secrets.FRANCETRAVAIL_CLIENT_ID }}
-          FRANCETRAVAIL_CLIENT_SECRET: ${{ secrets.FRANCETRAVAIL_CLIENT_SECRET }}
-        run: |
-          python -c "import os; i=os.environ.get('FRANCETRAVAIL_CLIENT_ID',''); s=os.environ.get('FRANCETRAVAIL_CLIENT_SECRET',''); print('ID length:', len(i), '| starts with PAR_:', i.startswith('PAR_'), '| spaces/newlines:', i!=i.strip()); print('SECRET length:', len(s), '| spaces/newlines:', s!=s.strip())"
-
-      - name: Run python scripts/fetch_offers.py
+      # France Travail "Offres d'emploi v2" is not available for new applications
+      # (API missing from the catalog) -> the step is kept but does not block the pipeline.
+      - name: Fetch France Travail offers (optional)
+        continue-on-error: true
         env:
           FRANCETRAVAIL_CLIENT_ID: ${{ secrets.FRANCETRAVAIL_CLIENT_ID }}
           FRANCETRAVAIL_CLIENT_SECRET: ${{ secrets.FRANCETRAVAIL_CLIENT_SECRET }}
         run: python scripts/fetch_offers.py
 
-      - name: Commit updated offers
+      - name: Match offers with my skills
+        run: python scripts/match_offers.py
+
+      - name: Commit results
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/offers/raw_offers.json
-          git diff --cached --quiet || git commit -m "Update raw offers"
+          git add docs/data/matches.json
+          if [ -f data/offers/raw_offers.json ]; then git add data/offers/raw_offers.json; fi
+          git diff --cached --quiet || git commit -m "Update matches"
           git push
