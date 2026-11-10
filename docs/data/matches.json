@@ -1,0 +1,417 @@
+{
+  "generated_at": "2026-11-10T20:05:58+00:00",
+  "profile_skills": 14,
+  "kpis": {
+    "pipeline_health": {
+      "offers_collected": 15,
+      "offers_with_skills_pct": 100.0,
+      "median_offer_age_days": 32,
+      "sources": [
+        "indeed"
+      ]
+    },
+    "search_effectiveness": {
+      "average_score": 50.4,
+      "good_matches": 10,
+      "good_match_rate_pct": 66.7,
+      "threshold": 50
+    },
+    "outcome": {
+      "best_offer": "Capgemini - Développeur / Développeuse GenAI - Python & IA générative - Stage",
+      "best_score": 85.0,
+      "top_demanded_skills": [
+        [
+          "Automated testing",
+          7
+        ],
+        [
+          "Java",
+          7
+        ],
+        [
+          "Spring Boot",
+          7
+        ],
+        [
+          "Python",
+          6
+        ],
+        [
+          "JavaScript",
+          6
+        ],
+        [
+          "Git",
+          6
+        ],
+        [
+          "English",
+          6
+        ],
+        [
+          "CI/CD",
+          6
+        ],
+        [
+          "Angular",
+          6
+        ],
+        [
+          "SQL",
+          4
+        ]
+      ],
+      "top_missing_skills": [
+        [
+          "JavaScript",
+          6
+        ],
+        [
+          "Agile",
+          4
+        ],
+        [
+          "SQL",
+          4
+        ],
+        [
+          "HTML/CSS",
+          4
+        ],
+        [
+          "Maven",
+          2
+        ],
+        [
+          "Machine learning",
+          2
+        ],
+        [
+          "C++",
+          2
+        ],
+        [
+          "C#/.NET",
+          2
+        ]
+      ]
+    }
+  },
+  "matches": [
+    {
+      "title": "Développeur / Développeuse GenAI - Python & IA générative - Stage",
+      "company": "Capgemini",
+      "location": "Blagnac (31)",
+      "published": "2026-11-04",
+      "age_days": 6,
+      "url": "https://to.indeed.com/aadffhvlxm7w",
+      "source": "indeed",
+      "score": 85.0,
+      "matched": [
+        "Python",
+        "LLM integration",
+        "API REST",
+        "Data visualization",
+        "Pandas"
+      ],
+      "missing": []
+    },
+    {
+      "title": "Stage - Développeur FullStack F/H",
+      "company": "Natixis",
+      "location": "Charenton-le-Pont (94)",
+      "published": "2026-09-07",
+      "age_days": 64,
+      "url": "https://to.indeed.com/aasnh8my9y68",
+      "source": "indeed",
+      "score": 75.0,
+      "matched": [
+        "API REST",
+        "Python",
+        "Automated testing",
+        "English"
+      ],
+      "missing": [
+        "JavaScript"
+      ]
+    },
+    {
+      "title": "Développeuse / Développeur Java - Stage",
+      "company": "Capgemini",
+      "location": "Aix-en-Provence (13)",
+      "published": "2026-09-17",
+      "age_days": 54,
+      "url": "https://to.indeed.com/aacrkqbf2dd8",
+      "source": "indeed",
+      "score": 70.8,
+      "matched": [
+        "Java",
+        "Spring Boot",
+        "Angular",
+        "CI/CD",
+        "English"
+      ],
+      "missing": [
+        "Agile"
+      ]
+    },
+    {
+      "title": "Stage - Développeur IT Risques de Marché F/H",
+      "company": "Natixis",
+      "location": "Charenton-le-Pont (94)",
+      "published": "2026-10-08",
+      "age_days": 33,
+      "url": "https://to.indeed.com/aa2spwzy29lz",
+      "source": "indeed",
+      "score": 65.6,
+      "matched": [
+        "Java",
+        "Spring Boot",
+        "Git",
+        "CI/CD",
+        "Automated testing",
+        "English"
+      ],
+      "missing": [
+        "Maven",
+        "SQL"
+      ]
+    },
+    {
+      "title": "Stage - Développeur Python Finance Valuation Group F/H",
+      "company": "Natixis",
+      "location": "Paris (75)",
+      "published": "2026-10-08",
+      "age_days": 33,
+      "url": "https://to.indeed.com/aah92vn49l99",
+      "source": "indeed",
+      "score": 58.3,
+      "matched": [
+        "Python",
+        "Git",
+        "Pandas",
+        "English"
+      ],
+      "missing": [
+        "Machine learning",
+        "Finance"
+      ]
+    },
+    {
+      "title": "Stagiaire Développeur.se Full Stack Java / Angular (H/F)",
+      "company": "Prima Solutions",
+      "location": "Paris (75)",
+      "published": "2026-05-13",
+      "age_days": 181,
+      "url": "https://to.indeed.com/aapwp9cryckd",
+      "source": "indeed",
+      "score": 52.3,
+      "matched": [
+        "Java",
+        "Spring Boot",
+        "Angular",
+        "Git",
+        "CI/CD",
+        "Automated testing",
+        "API REST"
+      ],
+      "missing": [
+        "Hibernate",
+        "Maven",
+        "SQL",
+        "Agile"
+      ]
+    },
+    {
+      "title": "[STAGE] Développeur Python IA & Accessibilité Web - H/F",
+      "company": "AVISTO",
+      "location": "Villeurbanne (69)",
+      "published": "2026-11-02",
+      "age_days": 8,
+      "url": "https://to.indeed.com/aa9mqt8qybn6",
+      "source": "indeed",
+      "score": 50.0,
+      "matched": [
+        "Python",
+        "Automated testing",
+        "LLM integration",
+        "Git",
+        "CI/CD"
+      ],
+      "missing": [
+        "HTML/CSS",
+        "JavaScript",
+        "Docker"
+      ]
+    },
+    {
+      "title": "Stagiaire Développeur Embarqué C++ / Python H/F",
+      "company": "PELLENC ST",
+      "location": "Pertuis (84)",
+      "published": "2026-09-29",
+      "age_days": 42,
+      "url": "https://to.indeed.com/aad9wwrjfdxb",
+      "source": "indeed",
+      "score": 50.0,
+      "matched": [
+        "Python"
+      ],
+      "missing": [
+        "C++"
+      ]
+    },
+    {
+      "title": "Stage développement fullstack - Lyon - 2027",
+      "company": "AXOPEN",
+      "location": "Lyon 6e (69)",
+      "published": "2026-10-27",
+      "age_days": 14,
+      "url": "https://to.indeed.com/aa7szwppw2ts",
+      "source": "indeed",
+      "score": 50.0,
+      "matched": [
+        "Java",
+        "Spring Boot",
+        "Angular",
+        "Git",
+        "Automated testing"
+      ],
+      "missing": [
+        "C#/.NET",
+        "React",
+        "PHP"
+      ]
+    },
+    {
+      "title": "Stage de pré-embauche - Ingénieur Développeur Java Junior H/F",
+      "company": "Ubik Ingénierie",
+      "location": "Roubaix (59)",
+      "published": "2026-11-03",
+      "age_days": 7,
+      "url": "https://to.indeed.com/aatrthlsrf4r",
+      "source": "indeed",
+      "score": 50.0,
+      "matched": [
+        "Java",
+        "Spring Boot",
+        "Angular",
+        "CI/CD",
+        "Automated testing"
+      ],
+      "missing": [
+        "React",
+        "JavaScript",
+        "Agile"
+      ]
+    },
+    {
+      "title": "Stage développeur FullStack Kotlin / Spring / Hibernate / Angular",
+      "company": "Isara Technologies",
+      "location": "Belfort (90)",
+      "published": "2026-11-02",
+      "age_days": 8,
+      "url": "https://to.indeed.com/aa6zzrrrpnsq",
+      "source": "indeed",
+      "score": 47.9,
+      "matched": [
+        "Java",
+        "Spring Boot",
+        "Angular",
+        "CI/CD",
+        "Git",
+        "Automated testing",
+        "English"
+      ],
+      "missing": [
+        "Kotlin",
+        "JavaScript",
+        "HTML/CSS",
+        "C++",
+        "C#/.NET"
+      ]
+    },
+    {
+      "title": "Stage - Ingénieur Big Data & Développeur Front-End F/H",
+      "company": "Natixis",
+      "location": "Charenton-le-Pont (94)",
+      "published": "2026-10-09",
+      "age_days": 32,
+      "url": "https://to.indeed.com/aajbwby4zwkp",
+      "source": "indeed",
+      "score": 47.2,
+      "matched": [
+        "Java",
+        "Spring Boot",
+        "Kafka",
+        "Angular",
+        "English"
+      ],
+      "missing": [
+        "Scala",
+        "Spark",
+        "Hadoop",
+        "Elasticsearch"
+      ]
+    },
+    {
+      "title": "STAGE - Data Engineer / Développeur Full-Stack Junior",
+      "company": "GASEL",
+      "location": "Boissy-Saint-Léger (94)",
+      "published": "2026-09-08",
+      "age_days": 63,
+      "url": "https://to.indeed.com/aaqtfmsc64m4",
+      "source": "indeed",
+      "score": 34.4,
+      "matched": [
+        "Python",
+        "LLM integration",
+        "API REST"
+      ],
+      "missing": [
+        "SQL",
+        "SQL Server",
+        "MySQL",
+        "HTML/CSS",
+        "JavaScript"
+      ]
+    },
+    {
+      "title": "Stage développeur / consultant DATA BI IA",
+      "company": "Aldecis",
+      "location": "Paris 11e (75)",
+      "published": "2026-11-06",
+      "age_days": 4,
+      "url": "https://to.indeed.com/aaqrdm248phk",
+      "source": "indeed",
+      "score": 18.8,
+      "matched": [
+        "Data visualization"
+      ],
+      "missing": [
+        "SQL",
+        "Statistics",
+        "Machine learning"
+      ]
+    },
+    {
+      "title": "Stage - Développeur Front End H/F",
+      "company": "MARQUETIS",
+      "location": "Levallois-Perret (92)",
+      "published": "2026-10-27",
+      "age_days": 14,
+      "url": "https://to.indeed.com/aavj9bq8n6sn",
+      "source": "indeed",
+      "score": 0.0,
+      "matched": [],
+      "missing": [
+        "HTML/CSS",
+        "JavaScript",
+        "PHP",
+        "Symfony",
+        "MySQL",
+        "WordPress",
+        "Agile"
+      ]
+    }
+  ]
+}
