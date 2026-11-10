@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Internship Match</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root { --bg:#f5f7fb; --card:#fff; --text:#1f2937; --muted:#6b7280; --accent:#2563eb; --good:#16a34a; --mid:#f59e0b; --bad:#dc2626; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:var(--bg); color:var(--text); }
+  header { background:#1e3a8a; color:#fff; padding:24px 16px; }
+  header h1 { margin:0 0 6px; font-size:1.6rem; }
+  header p { margin:0; opacity:.85; font-size:.95rem; }
+  main { max-width:1150px; margin:0 auto; padding:20px 16px 40px; }
+  h2 { font-size:1.1rem; margin:28px 0 12px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; }
+  .card { background:var(--card); border-radius:12px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,.08); }
+  .kpi .label { color:var(--muted); font-size:.85rem; }
+  .kpi .value { font-size:1.7rem; font-weight:700; margin-top:4px; }
+  .kpi .sub { color:var(--muted); font-size:.8rem; margin-top:4px; }
+  .cat { display:inline-block; font-size:.75rem; font-weight:600; padding:2px 8px; border-radius:99px; margin-bottom:8px; }
+  .c1 { background:#dbeafe; color:#1e40af; } .c2 { background:#fef3c7; color:#92400e; } .c3 { background:#dcfce7; color:#166534; }
+  .charts { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:800px){ .charts { grid-template-columns:1fr; } }
+  .chart-box { position:relative; height:420px; }
+  table { width:100%; border-collapse:collapse; font-size:.88rem; }
+  th, td { text-align:left; padding:8px 6px; border-bottom:1px solid #e5e7eb; vertical-align:top; }
+  th { color:var(--muted); font-weight:600; }
+  .table-wrap { overflow-x:auto; }
+  a { color:var(--accent); text-decoration:none; } a:hover { text-decoration:underline; }
+  .score { font-weight:700; }
+  .tag { display:inline-block; font-size:.72rem; padding:1px 6px; border-radius:6px; margin:1px; }
+  .ok { background:#dcfce7; color:#166534; } .ko { background:#fee2e2; color:#991b1b; }
+  .note { color:var(--muted); font-size:.82rem; margin-top:10px; }
+  footer { text-align:center; color:var(--muted); font-size:.8rem; padding:20px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🎯 Smart Internship Match</h1>
+  <p>Offres de stage en informatique comparées à mon profil de compétences · <span id="updated">chargement…</span></p>
+</header>
+
+<main>
+  <h2>Indicateurs clés</h2>
+  <div class="grid" id="kpis"></div>
+
+  <h2>Analyse</h2>
+  <div class="charts">
+    <div class="card"><b>Score de correspondance par offre</b><div class="chart-box"><canvas id="scoreChart"></canvas></div></div>
+    <div class="card"><b>Compétences les plus demandées</b> <span class="note">(vert = je l'ai, rouge = à acquérir)</span><div class="chart-box"><canvas id="skillChart"></canvas></div></div>
+  </div>
+
+  <h2>Classement des offres</h2>
+  <div class="card table-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Score</th><th>Offre</th><th>Entreprise</th><th>Lieu</th><th>Publiée</th><th>Compétences</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p class="note">Score = part pondérée des compétences demandées que je possède (niveau 1-4 de mon profil). Seuil « bonne correspondance » : <span id="thr"></span> %.
+    Source : offres Indeed collectées et structurées par LLM (l'API France Travail « Offres d'emploi v2 » n'est pas disponible pour les nouvelles applications).</p>
+  </div>
+</main>
+
+<footer>Projet BI · ENSIM · <a href="https://github.com/taharachedi/smart-internship-match">code source</a></footer>
+
+<script>
+const color = s => s >= 70 ? '#16a34a' : s >= 50 ? '#f59e0b' : '#dc2626';
+const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+fetch('data/matches.json?t=' + Date.now())
+  .then(r => r.json())
+  .then(d => {
+    const k = d.kpis, ph = k.pipeline_health, se = k.search_effectiveness, oc = k.outcome, m = d.matches;
+    document.getElementById('updated').textContent = 'mis à jour le ' + new Date(d.generated_at).toLocaleString('fr-FR');
+    document.getElementById('thr').textContent = se.threshold;
+
+    const cards = [
+      ['c1','Santé du pipeline','Offres collectées', ph.offers_collected, 'Source : ' + ph.sources.join(', ')],
+      ['c1','Santé du pipeline','Offres avec compétences extraites', ph.offers_with_skills_pct + ' %', 'Âge médian : ' + ph.median_offer_age_days + ' jours'],
+      ['c2','Efficacité de la recherche','Score moyen', se.average_score + ' %', 'Profil : ' + d.profile_skills + ' compétences'],
+      ['c2','Efficacité de la recherche','Bonnes correspondances', se.good_matches + ' / ' + ph.offers_collected, se.good_match_rate_pct + ' % au-dessus de ' + se.threshold + ' %'],
+      ['c3','Résultat','Meilleure offre', oc.best_score + ' %', oc.best_offer],
+      ['c3','Résultat','Compétence à acquérir n°1', oc.top_missing_skills[0] ? oc.top_missing_skills[0][0] : '-', oc.top_missing_skills[0] ? 'demandée dans ' + oc.top_missing_skills[0][1] + ' offres' : '']
+    ];
+    document.getElementById('kpis').innerHTML = cards.map(c =>
+      `<div class="card kpi"><span class="cat ${c[0]}">${c[1]}</span><div class="label">${esc(c[2])}</div><div class="value">${esc(c[3])}</div><div class="sub">${esc(c[4])}</div></div>`).join('');
+
+    new Chart(document.getElementById('scoreChart'), {
+      type: 'bar',
+      data: { labels: m.map(o => o.company + ' – ' + o.title.slice(0, 28)),
+              datasets: [{ data: m.map(o => o.score), backgroundColor: m.map(o => color(o.score)) }] },
+      options: { indexAxis: 'y', maintainAspectRatio: false, plugins: { legend: { display: false } },
+                 scales: { x: { min: 0, max: 100, title: { display: true, text: 'Score (%)' } }, y: { ticks: { font: { size: 10 } } } } }
+    });
+
+    const missingSet = new Set(oc.top_missing_skills.map(s => s[0]));
+    m.forEach(o => o.missing.forEach(s => missingSet.add(s)));
+    const top = oc.top_demanded_skills;
+    new Chart(document.getElementById('skillChart'), {
+      type: 'bar',
+      data: { labels: top.map(s => s[0]),
+              datasets: [{ data: top.map(s => s[1]), backgroundColor: top.map(s => missingSet.has(s[0]) ? '#dc2626' : '#16a34a') }] },
+      options: { indexAxis: 'y', maintainAspectRatio: false, plugins: { legend: { display: false } },
+                 scales: { x: { beginAtZero: true, ticks: { precision: 0 }, title: { display: true, text: "Nombre d'offres" } } } }
+    });
+
+    document.getElementById('rows').innerHTML = m.map((o, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td class="score" style="color:${color(o.score)}">${o.score} %</td>
+        <td><a href="${esc(o.url)}" target="_blank" rel="noopener">${esc(o.title)}</a></td>
+        <td>${esc(o.company)}</td>
+        <td>${esc(o.location)}</td>
+        <td>${esc(o.published)}</td>
+        <td>${o.matched.map(s => `<span class="tag ok">${esc(s)}</span>`).join('')}${o.missing.map(s => `<span class="tag ko">${esc(s)}</span>`).join('')}</td>
+      </tr>`).join('');
+  })
+  .catch(e => { document.getElementById('updated').textContent = 'erreur de chargement des données'; console.error(e); });
+</script>
+</body>
+</html>
