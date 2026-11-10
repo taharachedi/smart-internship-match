@@ -1,122 +1,128 @@
-"""Match internship offers against my skills profile.
+import csv, json, os, time
 
-Input : data/profile/my_skills.csv      (skill, level 1-4)
-        data/offers/indeed_offers.json  (structured offers, skills extracted)
-Output: docs/data/matches.json          (scores + KPIs for the dashboard)
-"""
-import csv
-import json
-from collections import Counter
-from datetime import date, datetime, timezone
-from pathlib import Path
+# Scale of the "level" column in my_skills.csv (1-5 self-assessment, see Step 4).
+MAX_LEVEL = 5
 
-ROOT = Path(__file__).resolve().parent.parent
-SKILLS_CSV = ROOT / "data" / "profile" / "my_skills.csv"
-OFFERS_JSON = ROOT / "data" / "offers" / "indeed_offers.json"
-OUTPUT_JSON = ROOT / "docs" / "data" / "matches.json"
+# Same skill, different spellings: the LLM extraction is not consistent
+# (case, accents, short forms). Every name is reduced to one canonical key
+# before comparing, so "REST API", "api rest" and "API REST" all match.
+ALIASES = {
+    "rest api": "api rest",
+    "apis": "api rest",
+    "api": "api rest",
+    "springboot": "spring boot",
+    "spring": "spring boot",
+    "tests": "automated testing",
+    "unit tests": "automated testing",
+    "tests unitaires": "automated testing",
+    "ci": "ci/cd",
+    "cd": "ci/cd",
+    "github actions": "ci/cd",
+    "jenkins": "ci/cd",
+    "anglais": "english",
+    "llm": "llm integration",
+    "ia générative": "llm integration",
+    "genai": "llm integration",
+    "dataviz": "data visualization",
+}
 
-MAX_LEVEL = 4
-GOOD_MATCH = 50  # score (%) from which an offer is worth applying to
+
+def norm(skill):
+    key = " ".join(str(skill).strip().lower().split())
+    return ALIASES.get(key, key)
 
 
-def load_profile(path):
-    """Return {skill_lowercase: level} from the skills CSV."""
+def load_profile(path="data/profile/my_skills.csv"):
     profile = {}
-    with open(path, newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        cols = reader.fieldnames
-        skill_col = next((c for c in cols if c.strip().lower() in ("skill", "competence", "compétence")), cols[0])
-        level_col = next((c for c in cols if c.strip().lower() in ("level", "niveau")), cols[1])
-        for row in reader:
-            name = (row.get(skill_col) or "").strip()
-            if not name:
-                continue
-            try:
-                level = int(float(row.get(level_col) or 0))
-            except ValueError:
-                level = 0
-            profile[name.lower()] = max(0, min(level, MAX_LEVEL))
+    with open(path, encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            profile[row["skill"]] = {"level": int(row["level"]), "evidence": row["evidence"]}
     return profile
 
 
-def score_offer(offer_skills, profile):
-    """Score = weighted share of required skills I have (case-insensitive)."""
-    if not offer_skills:
-        return 0.0, [], []
-    matched = [s for s in offer_skills if s.lower() in profile]
-    missing = [s for s in offer_skills if s.lower() not in profile]
-    weight = sum(profile[s.lower()] / MAX_LEVEL for s in matched)
-    return round(100 * weight / len(offer_skills), 1), matched, missing
+def score_offer(profile, required_skills):
+    """Match KPI (my design choice, CM2).
+
+    - Comparison is case/space/alias-insensitive (norm()), because the AI
+      extraction returns the same skill with inconsistent spellings.
+    - coverage = share of the offer's required skills I have (0-1).
+    - score    = coverage weighted by my self-assessed level:
+                 sum(level / MAX_LEVEL for matched skills) / n_required.
+      A skill I have at level 5 counts 1, at level 2 counts 0.4, missing counts 0.
+    - An offer with no extracted skill gets 0: nothing to defend in a cover letter.
+    - "matched" returns MY profile's skill names (so draft_cv.py finds the evidence),
+      "gaps" returns the offer's names for what I don't have.
+    """
+    req = []
+    for s in required_skills or []:
+        if norm(s) not in [norm(x) for x in req]:
+            req.append(s)  # de-duplicate within one offer
+    if not req:
+        return {"score": 0.0, "coverage": 0.0, "matched": [], "gaps": []}
+
+    by_key = {norm(name): name for name in profile}
+    matched, gaps, weight = [], [], 0.0
+    for s in req:
+        name = by_key.get(norm(s))
+        if name:
+            matched.append(name)
+            weight += profile[name]["level"] / MAX_LEVEL
+        else:
+            gaps.append(s)
+
+    return {
+        "score": round(weight / len(req), 3),
+        "coverage": round(len(matched) / len(req), 3),
+        "matched": matched,
+        "gaps": gaps,
+    }
 
 
-def days_old(published):
-    try:
-        return (date.today() - datetime.strptime(published, "%Y-%m-%d").date()).days
-    except (TypeError, ValueError):
-        return None
+def build_output(results, profile):
+    gap_counts = {}
+    matched_counts = {}
+    for r in results:
+        for g in r["gaps"]:
+            gap_counts[g] = gap_counts.get(g, 0) + 1
+        for s in r["matched"]:
+            matched_counts[s] = matched_counts.get(s, 0) + 1
+    top_gaps = sorted(gap_counts.items(), key=lambda kv: kv[1], reverse=True)[:10]
+    top_matched = sorted(matched_counts.items(), key=lambda kv: kv[1], reverse=True)[:10]
+    n_with_comp = sum(1 for r in results if r.get("compensation_mentioned"))
+    sources = {}
+    for r in results:
+        sources[r["source"]] = sources.get(r["source"], 0) + 1
+    return {
+        "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "n_offers": len(results),
+        "offers_per_source": sources,
+        "offers": results,
+        "top_skill_gaps": [{"skill": s, "count": c} for s, c in top_gaps],
+        "top_matched_skills": [{"skill": s, "count": c, "level": profile[s]["level"]} for s, c in top_matched],
+        "n_offers_with_compensation": n_with_comp,
+    }
+
+
+# Fields that identify a scraped posting. Removed from non-publishable offers
+# before anything goes to the public dashboard: only my own analysis
+# (score, coverage, matched, gaps) is published, never the listing itself.
+IDENTIFYING_FIELDS = ("title", "company", "location", "url", "responsibilities",
+                      "experience_required", "compensation_mentioned", "date_posted")
+
+
+def anonymize(r, i):
+    clean = {k: v for k, v in r.items() if k not in IDENTIFYING_FIELDS}
+    clean["id"] = f"offer_{i:02d}"
+    clean["title"] = f"Offre {r['source']} n°{i}"
+    clean["has_compensation"] = bool(r.get("compensation_mentioned"))
+    return clean
 
 
 def main():
-    profile = load_profile(SKILLS_CSV)
-    offers = json.loads(OFFERS_JSON.read_text(encoding="utf-8"))
+    profile = load_profile()
+    with open("data/offers/structured_offers.json", encoding="utf-8") as f:
+        data = json.load(f)
 
     results = []
-    for o in offers:
-        score, matched, missing = score_offer(o.get("skills", []), profile)
-        results.append({
-            "title": o.get("title"),
-            "company": o.get("company"),
-            "location": o.get("location"),
-            "published": o.get("published"),
-            "age_days": days_old(o.get("published")),
-            "url": o.get("url"),
-            "source": o.get("source"),
-            "score": score,
-            "matched": matched,
-            "missing": missing,
-        })
-    results.sort(key=lambda r: r["score"], reverse=True)
-
-    n = len(results)
-    with_skills = sum(1 for o in offers if o.get("skills"))
-    ages = [r["age_days"] for r in results if r["age_days"] is not None]
-    good = [r for r in results if r["score"] >= GOOD_MATCH]
-    demand = Counter(s for o in offers for s in o.get("skills", []))
-    gaps = Counter(s for r in results for s in r["missing"])
-
-    kpis = {
-        "pipeline_health": {
-            "offers_collected": n,
-            "offers_with_skills_pct": round(100 * with_skills / n, 1) if n else 0,
-            "median_offer_age_days": sorted(ages)[len(ages) // 2] if ages else None,
-            "sources": sorted({r["source"] for r in results if r["source"]}),
-        },
-        "search_effectiveness": {
-            "average_score": round(sum(r["score"] for r in results) / n, 1) if n else 0,
-            "good_matches": len(good),
-            "good_match_rate_pct": round(100 * len(good) / n, 1) if n else 0,
-            "threshold": GOOD_MATCH,
-        },
-        "outcome": {
-            "best_offer": f'{results[0]["company"]} - {results[0]["title"]}' if results else None,
-            "best_score": results[0]["score"] if results else None,
-            "top_demanded_skills": demand.most_common(10),
-            "top_missing_skills": gaps.most_common(8),
-        },
-    }
-
-    OUTPUT_JSON.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_JSON.write_text(json.dumps({
-        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "profile_skills": len(profile),
-        "kpis": kpis,
-        "matches": results,
-    }, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    print(f"Profile: {len(profile)} skills | Offers: {n} | Good matches (>= {GOOD_MATCH}%): {len(good)}")
-    for r in results[:5]:
-        print(f'  {r["score"]:5.1f}%  {r["company"]} - {r["title"]}')
-
-
-if __name__ == "__main__":
-    main()
+    for offer in data["offers"]:
+        m = score_offer(profile,
