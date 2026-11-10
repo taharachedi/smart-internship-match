@@ -1,7 +1,7 @@
 name: Fetch internship offers
 
-"on":
-  workflow_dispatch: {}
+on:
+  workflow_dispatch:
   schedule:
     - cron: "0 7 * * 1"
 
@@ -13,18 +13,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      - run: pip install requests
-      - run: python scripts/fetch_offers.py
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Check secrets (length only)
         env:
           FRANCETRAVAIL_CLIENT_ID: ${{ secrets.FRANCETRAVAIL_CLIENT_ID }}
           FRANCETRAVAIL_CLIENT_SECRET: ${{ secrets.FRANCETRAVAIL_CLIENT_SECRET }}
+        run: |
+          python -c "import os; i=os.environ.get('FRANCETRAVAIL_CLIENT_ID',''); s=os.environ.get('FRANCETRAVAIL_CLIENT_SECRET',''); print('ID length:', len(i), '| starts with PAR_:', i.startswith('PAR_'), '| spaces/newlines:', i!=i.strip()); print('SECRET length:', len(s), '| spaces/newlines:', s!=s.strip())"
+
+      - name: Run python scripts/fetch_offers.py
+        env:
+          FRANCETRAVAIL_CLIENT_ID: ${{ secrets.FRANCETRAVAIL_CLIENT_ID }}
+          FRANCETRAVAIL_CLIENT_SECRET: ${{ secrets.FRANCETRAVAIL_CLIENT_SECRET }}
+        run: python scripts/fetch_offers.py
+
       - name: Commit updated offers
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/offers/raw_offers.json
-          git commit -m "Fetch latest offers [automated]" || echo "Nothing to commit"
+          git diff --cached --quiet || git commit -m "Update raw offers"
           git push
