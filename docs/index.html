@@ -91,7 +91,7 @@ Promise.all([
     card('Offres collectées', n, src) +
     card('France Travail (source officielle)', 0, "API « Offres d'emploi v2 » non proposée aux nouvelles applications", 'bad') +
     card('Offres avec compétences extraites', pct(withSkills / n), withSkills + ' / ' + n + ' offres') +
-    card('Rémunération indiquée', d.n_offers_with_compensation + ' / ' + n, "dont 1 valeur aberrante (0,10 €/mois) rejetée à la relecture", 'warn');
+    card('Rémunération indiquée', d.n_offers_with_compensation + ' / ' + n, "+ 1 valeur aberrante (0,10 €/mois) exclue à la relecture", 'warn');
 
   // 2. Search effectiveness
   const scores = offers.map(o => o.score);
