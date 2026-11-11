@@ -25,6 +25,19 @@
       "good_matches_available": 4,
       "alerts": [],
       "status": "OK"
+    },
+    {
+      "run_at": "2026-11-11T16:12:50Z",
+      "trigger": "schedule",
+      "tracked": 3,
+      "status_counts": {
+        "to_apply": 3
+      },
+      "applications_sent": 0,
+      "response_rate_pct": null,
+      "good_matches_available": 4,
+      "alerts": [],
+      "status": "OK"
     }
   ]
 }
