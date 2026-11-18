@@ -116,6 +116,23 @@
       "good_matches_available": 4,
       "alerts": [],
       "status": "OK"
+    },
+    {
+      "run_at": "2026-11-18T17:17:27Z",
+      "trigger": "schedule",
+      "tracked": 3,
+      "status_counts": {
+        "to_apply": 3
+      },
+      "applications_sent": 0,
+      "response_rate_pct": null,
+      "good_matches_available": 4,
+      "alerts": [
+        "R1 offer_01: good match (0.68) still not applied after 8 days",
+        "R1 offer_02: good match (0.6) still not applied after 8 days",
+        "R1 offer_03: good match (0.567) still not applied after 8 days"
+      ],
+      "status": "ALERT"
     }
   ]
 }
