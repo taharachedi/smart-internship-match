@@ -59,9 +59,9 @@
   <h2><span class="pill c3">3</span> Résultat & suivi</h2>
   <div class="grid" id="k3"></div>
   <div class="charts">
-    <div class="card wrap"><b>Offres classées (anonymisées)</b>
+    <div class="card wrap"><b>Offres classées</b>
       <table><thead><tr><th>Offre</th><th>Score</th><th>Couverture</th><th>Compétences</th></tr></thead><tbody id="rows"></tbody></table>
-      <p class="note">Les offres viennent d'Indeed (contenu non republiable) : seuls mes scores sont publiés, jamais le titre, l'entreprise ou le lien.</p></div>
+      <p class="note">Offres : <a href="https://www.adzuna.fr" target="_blank" rel="noopener">Jobs by Adzuna</a> (API officielle). « ? » = compétences non lisibles dans l'extrait Adzuna (inconnu, pas un mauvais score). Les offres Indeed collectées au départ restent locales (non republiables).</p></div>
     <div class="card wrap"><b>Historique du monitoring</b>
       <table><thead><tr><th>Exécution</th><th>Déclencheur</th><th>Statut</th><th>Envoyées</th><th>Alertes</th></tr></thead><tbody id="mon"></tbody></table>
       <p class="note">Règles : R1 bonne offre non postulée après 7 j · R2 pas de réponse 10 j après envoi · R3 aucune offre ≥ 0,5.</p></div>
@@ -85,24 +85,28 @@ Promise.all([
   document.getElementById('updated').textContent = new Date(d.generated_at).toLocaleString('fr-FR');
 
   // 1. Pipeline health
-  const src = Object.entries(d.offers_per_source).map(([k, v]) => `${k} : ${v}`).join(' · ');
-  const withSkills = offers.filter(o => (o.required_skills || []).length).length;
+  const pl = d.pipeline || {};
+  const withSkills = d.n_offers_with_skills ?? offers.filter(o => (o.required_skills || []).length).length;
   document.getElementById('k1').innerHTML =
-    card('Offres collectées', n, src) +
+    card('Offres collectées (Adzuna)', pl.fetched ?? n, 'API officielle, 1 appel manuel') +
+    card('Après nettoyage', n, (pl.duplicates_removed ?? 0) + ' doublons + ' + (pl.out_of_scope_removed ?? 0) + ' hors sujet retirés') +
+    card('Offres avec compétences extraites', pct(withSkills / n), withSkills + ' / ' + n + ' — extrait Adzuna limité à 500 caractères', withSkills / n < 0.8 ? 'warn' : '') +
     card('France Travail (source officielle)', 0, "API « Offres d'emploi v2 » non proposée aux nouvelles applications", 'bad') +
-    card('Offres avec compétences extraites', pct(withSkills / n), withSkills + ' / ' + n + ' offres') +
-    card('Rémunération indiquée', d.n_offers_with_compensation + ' / ' + n, "+ 1 valeur aberrante (0,10 €/mois) exclue à la relecture", 'warn');
+    card('Rémunération indiquée', d.n_offers_with_compensation + ' / ' + n, 'champ salaire non estimé par Adzuna', 'warn');
 
   // 2. Search effectiveness
-  const scores = offers.map(o => o.score);
-  const avg = scores.reduce((a, b) => a + b, 0) / n;
+  // Computed only on offers whose skills are known: an empty extract is "unknown", not "bad match".
+  const known = offers.filter(o => (o.required_skills || []).length);
+  const nk = known.length || 1;
+  const scores = known.map(o => o.score);
+  const avg = scores.reduce((a, b) => a + b, 0) / nk;
   const good = scores.filter(s => s >= 0.5).length;
-  const avgCov = offers.reduce((a, o) => a + o.coverage, 0) / n;
+  const avgCov = known.reduce((a, o) => a + o.coverage, 0) / nk;
   document.getElementById('k2').innerHTML =
-    card('Score moyen', avg.toFixed(2), 'sur 1 (pondéré par mon niveau)') +
+    card('Score moyen', avg.toFixed(2), 'sur les ' + known.length + ' offres aux compétences connues') +
     card('Couverture moyenne', pct(avgCov), 'part des compétences demandées que j\'ai') +
-    card('Bonnes correspondances', good + ' / ' + n, 'score ≥ 0,5') +
-    card('Lacune n°1', d.top_skill_gaps[0].skill, 'manque dans ' + d.top_skill_gaps[0].count + ' offres', 'warn');
+    card('Bonnes correspondances', good + ' / ' + known.length, 'score ≥ 0,5') +
+    card('Lacune n°1', d.top_skill_gaps[0] ? d.top_skill_gaps[0].skill : '—', d.top_skill_gaps[0] ? 'manque dans ' + d.top_skill_gaps[0].count + ' offres' : '', 'warn');
 
   const bins = ['0–0,2', '0,2–0,4', '0,4–0,6', '0,6–0,8', '0,8–1'], cnt = [0, 0, 0, 0, 0];
   scores.forEach(s => cnt[Math.min(4, Math.floor(s / 0.2))]++);
@@ -136,14 +140,10 @@ Promise.all([
     card('Exécutions du monitoring', mon.runs.length, 'dernier statut : ' + (last.status || '—'));
 
   document.getElementById('rows').innerHTML = offers.map(o => `
-    <tr><td>${esc(o.title)}</td><td><b>${o.score.toFixed(2)}</b></td><td>${pct(o.coverage)}</td>
-    <td>${o.matched.map(s => `<span class="tag ok">${esc(s)}</span>`).join('')}${o.gaps.map(s => `<span class="tag ko">${esc(s)}</span>`).join('')}</td></tr>`).join('');
+    <tr><td><a href="${esc(o.url)}" target="_blank" rel="noopener">${esc(o.title)}</a><div class="sub">${esc(o.company)} · ${esc(o.location)}</div></td>
+    <td><b>${(o.required_skills || []).length ? o.score.toFixed(2) : '?'}</b></td><td>${(o.required_skills || []).length ? pct(o.coverage) : '?'}</td>
+    <td>${o.matched.map(s => `<span class="tag ok">${esc(s)}</span>`).join('')}${o.gaps.map(s => `<span class="tag ko">${esc(s)}</span>`).join('')}${(o.required_skills || []).length ? '' : '<span class="sub">extrait sans compétence</span>'}</td></tr>`).join('');
 
   document.getElementById('mon').innerHTML = mon.runs.slice().reverse().map((r, i) => `
     <tr><td>#${mon.runs.length - i} · ${new Date(r.run_at).toLocaleString('fr-FR')}</td><td>${esc(r.trigger)}</td>
     <td class="st-${esc(r.status)}">${esc(r.status)}</td><td>${r.applications_sent}</td>
-    <td>${r.alerts.length ? r.alerts.map(esc).join('<br>') : 'aucune'}</td></tr>`).join('') || '<tr><td colspan="5">aucune exécution</td></tr>';
-}).catch(e => { document.getElementById('updated').textContent = 'erreur de chargement'; console.error(e); });
-</script>
-</body>
-</html>
