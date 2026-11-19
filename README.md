@@ -9,85 +9,93 @@ Système personnel d'aide à la décision pour ma recherche de stage : collecter
 | Étape | Fichier | Où | Rôle |
 |---|---|---|---|
 | Profil | `data/profile/my_skills.csv` | repo | 14 compétences (niveau 1-5) + preuve concrète pour chacune |
-| Acquisition officielle | `scripts/fetch_offers.py` + `fetch_offers.yml` | GitHub Actions, chaque lundi | API France Travail « Offres d'emploi v2 » (OAuth2) |
-| Acquisition 2e source | Indeed (connecteur Claude) | local | 15 offres de stage réelles (10/11/2026) |
-| Structuration (IA) | Claude, prompt de `extract_offers.py` | local | `required_skills`, `responsibilities`, `experience_required`, `compensation_mentioned` |
-| KPI de matching | `scripts/match_offers.py` → `score_offer()` | local | score, coverage, matched, gaps |
+| Acquisition officielle 1 | `scripts/fetch_offers.py` + `fetch_offers.yml` | GitHub Actions, chaque lundi | API France Travail « Offres d'emploi v2 » (OAuth2), indisponible, voir §8 |
+| Acquisition officielle 2 | `scripts/fetch_offers_adzuna.py` + `fetch_adzuna.yml` | GitHub Actions, **manuel uniquement** | API Adzuna, source recommandée par l'enseignant → `data/offers/adzuna_offers.json` |
+| Structuration (IA) | prompt de `scripts/extract_offers.py` | Claude (rôle d'Ollama) | `required_skills`, `responsibilities`, `experience_required`, `compensation_mentioned` → `data/offers/adzuna_structured.json` |
+| KPI de matching | `scripts/match_offers.py` → `score_offer()` + `match.yml` | GitHub Actions, manuel | score, coverage, matched, gaps → `docs/data/matches.json` |
 | Action (IA) | `scripts/draft_cv.py` | local | paragraphe d'accroche pour le top 3, fondé uniquement sur mes preuves |
 | Suivi | `data/tracking/applications.csv` | repo | tableau que je tiens moi-même (pas l'IA) |
 | Monitoring | `scripts/monitor_applications.py` + `monitor.yml` | GitHub Actions, chaque jour | 3 règles d'alerte, historique dans `docs/data/monitoring.json` |
 | Restitution | `docs/index.html` | GitHub Pages | dashboard Chart.js |
 
-Fichiers **locaux uniquement** (gitignorés) : `structured_offers.json`, `matches_all_local.json`, `output/cv_drafts/`.
+**Respect des limites Adzuna (consigne de l'enseignant) :** pas de lancement automatique, au maximum une collecte par semaine. Une collecte = 1 seul appel (50 offres).
+
+**Sources et publication :** le dashboard public ne contient **que des sources publiables** (API officielle Adzuna, avec l'attribution « Jobs by Adzuna »). Les 15 offres Indeed collectées au début du projet (contenu scrapé, `publishable: false`) restent **uniquement en local**, dans les fichiers gitignorés.
 
 ## 2. Le KPI de matching (`score_offer`)
 
 - `coverage` = compétences demandées que j'ai / compétences demandées
 - `score` = Σ (mon niveau / 5) pour les compétences trouvées / compétences demandées
-- **Comparaison normalisée** : minuscules, espaces et synonymes (`REST API` = `API REST`, `anglais` = `English`, `Jenkins` → `CI/CD`...). Une simple égalité de chaînes sous-compterait les vraies correspondances, puisque l'IA ne renvoie pas toujours la même orthographe.
-- **Pourquoi pondérer par le niveau ?** Avoir Angular au niveau 2 ne vaut pas Java au niveau 4. La couverture seule surestimerait les offres front.
-- `matched` contient le nom de **ma** compétence, ce qui permet à `draft_cv.py` de retrouver la preuve correspondante. `gaps` contient le nom utilisé par l'offre.
-- Une offre sans compétence extraite obtient 0, puisqu'il n'y a rien à défendre dans une lettre.
+- **Comparaison normalisée** : minuscules, espaces et synonymes (`REST API` = `API REST`, `Jenkins` → `CI/CD`…). Une simple égalité de chaînes sous-compterait les vraies correspondances.
+- **Pondération par le niveau** : Angular au niveau 2 ne vaut pas Java au niveau 4.
+- `matched` contient le nom de **ma** compétence (pour que `draft_cv.py` retrouve la preuve) ; `gaps` contient le nom utilisé par l'offre.
+- **Offre sans compétence extraite** : score 0 dans le classement, mais le dashboard l'affiche « ? » et l'**exclut des moyennes**. Une information inconnue n'est pas une mauvaise correspondance.
 
-## 3. KPI (3 catégories)
+## 3. KPI (3 catégories) — collecte Adzuna du 19/11/2026
 
 | Catégorie | KPI | Valeur |
 |---|---|---|
-| Santé du pipeline | Offres collectées / par source | 15 (Indeed 15, France Travail 0) |
-| Santé du pipeline | Offres avec compétences extraites | 100 % |
-| Santé du pipeline | Erreurs d'extraction trouvées à la relecture | 3 sur 15 offres (voir §5) |
-| Santé du pipeline | Offres indiquant une rémunération | 5 / 15 |
-| Efficacité de la recherche | Score moyen / couverture moyenne | 0,40 / 58 % |
-| Efficacité de la recherche | Bonnes correspondances (score ≥ 0,5) | 4 / 15 |
-| Efficacité de la recherche | Lacune n°1 | JavaScript (6 offres) |
+| Santé du pipeline | Offres collectées | 50 (Adzuna, sur 369 disponibles) |
+| Santé du pipeline | Après nettoyage | 31 (10 doublons + 9 hors sujet retirés) |
+| Santé du pipeline | Offres avec compétences extraites | 19 / 31 (61 %) |
+| Santé du pipeline | Rémunération indiquée | 1 / 31 |
+| Santé du pipeline | France Travail | 0 (API non disponible) |
+| Efficacité de la recherche | Score moyen / couverture moyenne (19 offres connues) | 0,11 / 17 % |
+| Efficacité de la recherche | Bonnes correspondances (score ≥ 0,5) | 2 / 19 |
+| Efficacité de la recherche | Lacune n°1 | Intelligence artificielle (6 offres) |
 | Résultat | Candidatures envoyées / taux de réponse | 0 / — |
-| Résultat | Exécutions du monitoring | 2 (manuelles) + 1 par jour |
+| Résultat | Exécutions du monitoring | 12 (dont 2 en ALERT) |
 
 KPI qui ne mesure pas « plus de candidatures, plus vite » : **la lacune n°1**. Elle me dit quoi apprendre, pas combien postuler.
+
+**Top 3 actuel :** Safran – ingénieur informatique Python (0,80) · Thales – automatisation du déploiement logiciel (0,60) · Thales – DevOps Docker / CI-CD (0,40).
 
 ## 4. Choix des graphiques (pour qui, quelle décision, pourquoi ce type)
 
 | Visuel | Pour qui | Décision | Pourquoi ce type |
 |---|---|---|---|
 | Cartes KPI par catégorie | moi, en 5 secondes | « mon pipeline marche-t-il ? ma recherche cible-t-elle bien ? » | un chiffre + un contexte, groupés selon les 3 catégories demandées |
-| Histogramme des scores | moi | élargir ou resserrer mes mots-clés | je veux la **forme** de la distribution (9 offres entre 0,4 et 0,6), pas comparer les offres une à une |
-| Barres horizontales des compétences (vert / rouge) | moi | quoi apprendre en premier | les libellés sont longs, donc les barres sont horizontales et triées par fréquence. La couleur sépare ce que j'ai de ce qui me manque, sans légende à lire |
-| Tableau des offres classées | moi | à quelles offres postuler en premier | j'ai besoin de détails exacts (compétences trouvées et manquantes), pas d'une tendance : un tableau convient mieux qu'un graphique |
-| Historique du monitoring | moi / l'enseignant | « dois-je agir ? » | une liste chronologique avec un statut OK/ALERT : c'est le journal d'un contrôle, pas une mesure |
+| Histogramme des scores | moi | élargir ou resserrer mes mots-clés | je veux la **forme** de la distribution (15 offres sur 19 sous 0,2 → mots-clés trop larges), pas comparer les offres une à une |
+| Barres horizontales des compétences (vert / rouge) | moi | quoi apprendre en premier | libellés longs → barres horizontales triées par fréquence ; la couleur sépare ce que j'ai de ce qui me manque |
+| Tableau des offres classées (avec lien) | moi | à quelles offres postuler en premier | j'ai besoin de détails exacts (compétences, lien pour postuler), pas d'une tendance |
+| Historique du monitoring | moi / l'enseignant | « dois-je agir ? » | une liste chronologique avec un statut OK / ALERT : c'est le journal d'un contrôle, pas une mesure |
 
-Pas de graphique des salaires : seules 5 offres sur 15 indiquent un chiffre, ce graphique serait surtout vide.
+Pas de graphique des salaires : 1 seule offre sur 31 indique un chiffre.
 
-## 5. Erreurs d'IA repérées (relecture critique, CM5)
+## 5. Erreurs et pièges d'IA repérés (relecture critique, CM5)
 
-1. **Compétence inventée** : l'extraction a ajouté « Pandas » à 2 offres (GenAI Python et Python Finance) alors que les annonces disent seulement « outils d'analyse de données » ou « traitement de données ». Je l'ai retiré, et le score de l'offre Python Finance passe de 0,47 à 0,44. C'est exactement le risque d'une IA qui « complète » à partir du contexte.
-2. **Chiffre absurde recopié** : une annonce indique « 0,10 € par mois » de rémunération. Le chiffre est bien dans le texte, donc une extraction fidèle le recopie, mais il est impossible (la gratification légale tourne autour de 4,35 €/h). Je l'ai rejeté : on passe de 6 à 5 offres avec rémunération.
-3. **Brouillons de lettre** : je vérifie qu'aucun outil absent de mon profil (LangGraph, JavaScript, React...) n'est présenté comme une compétence. « Agile » n'apparaît que comme contexte (la squad chez ALTEN), pas comme maîtrise de Scrum.
+1. **Compétence inventée** (première extraction, offres Indeed) : « Pandas » ajouté à 2 offres qui disaient seulement « outils d'analyse de données ». Retiré.
+2. **Chiffre absurde recopié** (Indeed) : « 0,10 € par mois » de rémunération, bien présent dans le texte mais impossible. Rejeté.
+3. **Contexte pris pour une exigence** (Adzuna, SFR) : l'extrait cite « IA, data, cloud, cybersécurité », mais ces mots décrivent l'**entreprise**, pas le stage. Non extraits.
+4. **Faux ami** (Adzuna, Michelin) : « outil de conception générative » est du design paramétrique, **pas** de l'IA générative. Non converti en « LLM integration », ce qui aurait gonflé mon score.
+5. **Faute de frappe** (Adzuna, Safran) : le titre dit « PHYTON ». Normalisé en « Python » à la relecture : une égalité exacte l'aurait raté.
+6. **Brouillons de lettre** : vérification qu'aucun outil absent de mon profil (LangGraph, JavaScript, Docker…) n'est présenté comme une compétence.
 
 ## 6. Monitoring
 
 Règles, c'est-à-dire ma définition de « ma recherche va mal » :
-- **R1** : une offre avec un score ≥ 0,5 est encore `to_apply` après 7 jours. Je n'agis pas.
-- **R2** : une candidature est `sent` sans réponse depuis 10 jours. Il faut relancer.
-- **R3** : aucune offre n'a un score ≥ 0,5. Mes mots-clés ne ciblent plus les bonnes offres.
+- **R1** : une offre avec un score ≥ 0,5 est encore `to_apply` après 7 jours → je n'agis pas.
+- **R2** : une candidature est `sent` sans réponse depuis 10 jours → il faut relancer.
+- **R3** : aucune offre n'a un score ≥ 0,5 → mes mots-clés ne ciblent plus les bonnes offres.
 
-**Exécutions :** run n°1 et run n°2 le 10/11/2026 (manuels), puis un run chaque jour à 8h17 UTC. Résultat : `OK (0 sent, 4 good matches available)`.
-**Ce que ça a montré :** aucune alerte pour l'instant, mais **0 candidature envoyée**. Si rien ne change, R1 passera en ALERT le 18/11 pour les 3 offres du top. C'est le contrôle qui transforme le dashboard en action.
+**Exécutions :** 2 manuelles le 10/11/2026, puis une par jour (12 au total le 19/11).
+**Ce que ça a détecté :** les runs n°10 (18/11) et n°11 (19/11) sont passés en **ALERT (R1)**. Les 3 meilleures offres du suivi étaient toujours « à postuler » après 8 à 9 jours. Le contrôle a donc joué son rôle : il a transformé un dashboard « joli » en signal d'action. Le suivi a été mis à jour le 19/11 avec les nouvelles offres Adzuna (statut OK), et l'alerte reviendra si je ne postule pas sous 7 jours.
 
 ## 7. Confidentialité et données
 
-- Les identifiants France Travail sont uniquement dans GitHub Secrets. Le fichier d'identifiants n'a jamais été commité.
-- Les offres Indeed sont du contenu scrapé, non republiable (`publishable: false`). Le dashboard public ne montre que **mes** scores, anonymisés (« Offre indeed n°1 »), jamais le titre, l'entreprise, le lien ou la description. Un premier fichier d'offres a été retiré du repo après coup ; il reste dans l'historique git.
-- Les brouillons de lettre et le classement complet restent sur mon PC.
-- Le profil ne contient que des compétences et des preuves professionnelles, aucune information administrative personnelle.
+- Identifiants France Travail et Adzuna uniquement dans GitHub Secrets ; aucun fichier d'identifiants commité.
+- Dashboard public = sources publiables uniquement (Adzuna). Les offres Indeed, les brouillons de lettre et le classement complet restent sur mon PC (`.gitignore`).
+- Le profil ne contient que des compétences et des preuves professionnelles.
 
 ## 8. Problèmes rencontrés et limites
 
-- **France Travail :** l'application a bien été créée, mais l'API « Offres d'emploi v2 » ne figure plus dans la liste des API ajoutables. Sans API autorisée, le token renvoie `invalid_client`. J'ai vérifié les secrets depuis le workflow (longueur et format uniquement : identifiant de 89 caractères commençant par `PAR_`, clé de 64 caractères) pour écarter une erreur de copie. L'étape reste dans le workflow avec `continue-on-error`, pour fonctionner dès que l'API sera de nouveau proposée.
-- **Petit échantillon** (15 offres, majoritairement en Île-de-France) et **profil auto-évalué** : les scores servent à classer les offres, ce ne sont pas des probabilités d'embauche.
-- Le score donne le même poids à une compétence « obligatoire » et à une compétence « appréciée ».
+- **France Travail :** l'application a été créée, mais l'API « Offres d'emploi v2 » ne figure pas dans la liste des API ajoutables → `invalid_client`. Les secrets ont été vérifiés depuis le workflow (format et longueur uniquement). L'étape est conservée avec `continue-on-error`.
+- **Adzuna, plan gratuit :** 25 appels de test, et surtout **un extrait de 500 caractères seulement** par offre, souvent la présentation de l'entreprise. Résultat : 12 offres sur 31 sans compétence lisible. C'est la principale limite de la donnée, pas un défaut du pipeline. Le score de ces offres est « inconnu ».
+- **Mots-clés trop larges :** « stage informatique » ramène beaucoup d'offres industrielles (informatique industrielle, électronique), d'où un score moyen faible (0,11). Piste : chercher « stage développeur Java » ou « stage Python ».
+- Petit échantillon et profil auto-évalué : le score sert à classer les offres, ce n'est pas une probabilité d'embauche.
 
 ## 9. Décisions
 
-1. Postuler d'abord aux 3 offres avec un score ≥ 0,55 (GenAI Python 0,70, FullStack 0,60, Java 0,57), avec les brouillons relus.
-2. Combler JavaScript puis SQL : un petit projet front JS + SQL ferait gagner des points sur 6 offres.
-3. Ignorer les offres Big Data (Scala/Spark) et PHP/WordPress, trop éloignées de mon profil.
+1. Postuler d'abord à **Safran – Python (0,80)** et **Thales – automatisation du déploiement (0,60)**, puis Thales DevOps après une remise à niveau Docker.
+2. Apprendre les bases de l'**IA appliquée** (demandée dans 6 offres sur 19) et **Docker**.
+3. Affiner les mots-clés de la prochaine collecte hebdomadaire (« stage développeur Java / Python ») pour réduire les offres hors profil.
