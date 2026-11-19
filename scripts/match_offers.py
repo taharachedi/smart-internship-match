@@ -103,26 +103,53 @@ def build_output(results, profile):
     }
 
 
-# Fields that identify a scraped posting. Removed from non-publishable offers
-# before anything goes to the public dashboard: only my own analysis
-# (score, coverage, matched, gaps) is published, never the listing itself.
-IDENTIFYING_FIELDS = ("title", "company", "location", "url", "responsibilities",
-                      "experience_required", "compensation_mentioned", "date_posted")
-
-
-def anonymize(r, i):
-    clean = {k: v for k, v in r.items() if k not in IDENTIFYING_FIELDS}
-    clean["id"] = f"offer_{i:02d}"
-    clean["title"] = f"Offre {r['source']} n°{i}"
-    clean["has_compensation"] = bool(r.get("compensation_mentioned"))
-    return clean
+# Inputs:
+# - data/offers/adzuna_structured.json : official Adzuna API offers, structured (LLM step),
+#   publishable -> committed, so this script can run in GitHub Actions.
+# - data/offers/structured_offers.json : OPTIONAL, local only (gitignored), Indeed offers
+#   (scraped, publishable: false). Absent in GitHub Actions -> public output = Adzuna only.
+ADZUNA_PATH = "data/offers/adzuna_structured.json"
+LOCAL_PATH = "data/offers/structured_offers.json"
 
 
 def main():
     profile = load_profile()
-    with open("data/offers/structured_offers.json", encoding="utf-8") as f:
-        data = json.load(f)
+    with open(ADZUNA_PATH, encoding="utf-8") as f:
+        adzuna = json.load(f)
+    offers = list(adzuna["offers"])
+    if os.path.exists(LOCAL_PATH):
+        with open(LOCAL_PATH, encoding="utf-8") as f:
+            offers += json.load(f)["offers"]
+        print(f"Local file {LOCAL_PATH} found: added non-publishable offers (personal use only)")
 
     results = []
-    for offer in data["offers"]:
-        m = score_offer(profile,
+    for offer in offers:
+        m = score_offer(profile, offer["required_skills"])
+        results.append({**offer, **m})
+
+    results.sort(key=lambda r: r["score"], reverse=True)
+    for r in results:
+        print(f"  {r['score']:.3f}  {r['title']} @ {r['company']}  ({r['source']}, "
+              f"coverage {r['coverage']:.0%}, gaps: {r['gaps']})")
+
+    os.makedirs("data/offers", exist_ok=True)
+    with open("data/offers/matches_all_local.json", "w", encoding="utf-8") as f:
+        json.dump(build_output(results, profile), f, indent=2, ensure_ascii=False)
+    print(f"Wrote data/offers/matches_all_local.json ({len(results)} offers) -- gitignored, local only")
+
+    # Public dashboard = publishable sources ONLY (manual's rule): scraped offers never
+    # leave this machine, not even anonymized.
+    public_results = [r for r in results if r.get("publishable", False)]
+    n_pub = len(public_results)
+    out = build_output(public_results, profile)
+    out["n_offers_with_compensation"] = sum(1 for r in public_results if r.get("compensation_mentioned") or r.get("has_compensation"))
+    out["n_offers_with_skills"] = sum(1 for r in public_results if r.get("required_skills"))
+    out["pipeline"] = adzuna.get("pipeline", {})
+    os.makedirs("docs/data", exist_ok=True)
+    with open("docs/data/matches.json", "w", encoding="utf-8") as f:
+        json.dump(out, f, indent=2, ensure_ascii=False)
+    print(f"Wrote docs/data/matches.json ({n_pub} of {len(results)} offers -- publishable sources only)")
+
+
+if __name__ == "__main__":
+    main()
