@@ -150,6 +150,19 @@
         "R1 offer_03: good match (0.567) still not applied after 9 days"
       ],
       "status": "ALERT"
+    },
+    {
+      "run_at": "2026-11-19T20:13:00Z",
+      "trigger": "workflow_dispatch",
+      "tracked": 3,
+      "status_counts": {
+        "to_apply": 3
+      },
+      "applications_sent": 0,
+      "response_rate_pct": null,
+      "good_matches_available": 2,
+      "alerts": [],
+      "status": "OK"
     }
   ]
 }
