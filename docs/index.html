@@ -147,3 +147,8 @@ Promise.all([
   document.getElementById('mon').innerHTML = mon.runs.slice().reverse().map((r, i) => `
     <tr><td>#${mon.runs.length - i} · ${new Date(r.run_at).toLocaleString('fr-FR')}</td><td>${esc(r.trigger)}</td>
     <td class="st-${esc(r.status)}">${esc(r.status)}</td><td>${r.applications_sent}</td>
+    <td>${r.alerts.length ? r.alerts.map(esc).join('<br>') : 'aucune'}</td></tr>`).join('') || '<tr><td colspan="5">aucune exécution</td></tr>';
+}).catch(e => { document.getElementById('updated').textContent = 'erreur de chargement'; console.error(e); });
+</script>
+</body>
+</html>
