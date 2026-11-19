@@ -1,25 +1,853 @@
 {
+  "generated_at": "2026-11-19T20:07:31Z",
+  "n_offers": 31,
+  "offers_per_source": {
+    "adzuna": 31
+  },
   "offers": [
-    {"id": "offer_01", "source": "indeed", "is_apprenticeship": false, "accessible_disability": false, "publishable": false, "required_skills": ["Python", "LLM integration", "API REST", "Data visualization"], "critique_note": "'Pandas' removed at review: not named in the posting (inferred from 'outils d'analyse de données' / 'traitement de données')", "score": 0.7, "coverage": 1.0, "matched": ["Python", "LLM integration", "API REST", "Data visualization"], "gaps": [], "title": "Offre indeed n°1", "has_compensation": false},
-    {"id": "offer_02", "source": "indeed", "is_apprenticeship": false, "accessible_disability": false, "publishable": false, "required_skills": ["API REST", "Python", "JavaScript", "Automated testing", "English"], "score": 0.6, "coverage": 0.8, "matched": ["API REST", "Python", "Automated testing", "English"], "gaps": ["JavaScript"], "title": "Offre indeed n°2", "has_compensation": false},
-    {"id": "offer_03", "source": "indeed", "is_apprenticeship": false, "accessible_disability": false, "publishable": false, "required_skills": ["Java", "Spring Boot", "Angular", "CI/CD", "Agile", "English"], "score": 0.567, "coverage": 0.833, "matched": ["Java", "Spring Boot", "Angular", "CI/CD", "English"], "gaps": ["Agile"], "title": "Offre indeed n°3", "has_compensation": false},
-    {"id": "offer_04", "source": "indeed", "is_apprenticeship": false, "accessible_disability": false, "publishable": false, "required_skills": ["Java", "Spring Boot", "Git", "CI/CD", "Maven", "SQL", "Automated testing", "English"], "score": 0.525, "coverage": 0.75, "matched": ["Java", "Spring Boot", "Git", "CI/CD", "Automated testing", "English"], "gaps": ["Maven", "SQL"], "title": "Offre indeed n°4", "has_compensation": false},
-    {"id": "offer_05", "source": "indeed", "is_apprenticeship": false, "accessible_disability": false, "publishable": false, "required_skills": ["Python", "Machine learning", "Git", "English", "Finance"], "critique_note": "'Pandas' removed at review: not named in the posting (inferred from 'outils d'analyse de données' / 'traitement de données')", "score": 0.44, "coverage": 0.6, "matched": ["Python", "Git", "English"], "gaps": ["Machine learning", "Finance"], "title": "Offre indeed n°5", "has_compensation": false},
-    {"id": "offer_06", "source": "indeed", "is_apprenticeship": false, "accessible_disability": false, "publishable": false, "required_skills": ["Java", "Spring Boot", "Angular", "Hibernate", "Git", "CI/CD", "Maven", "SQL", "Automated testing", "API REST", "Agile"], "score": 0.418, "coverage": 0.636, "matched": ["Java", "Spring Boot", "Angular", "Git", "CI/CD", "Automated testing", "API REST"], "gaps": ["Hibernate", "Maven", "SQL", "Agile"], "title": "Offre indeed n°6", "has_compensation": true},
-    {"id": "offer_07", "source": "indeed", "is_apprenticeship": false, "accessible_disability": false, "publishable": false, "required_skills": ["Python", "Automated testing", "LLM integration", "HTML/CSS", "JavaScript", "Git", "Docker", "CI/CD"], "score": 0.4, "coverage": 0.625, "matched": ["Python", "Automated testing", "LLM integration", "Git", "CI/CD"], "gaps": ["HTML/CSS", "JavaScript", "Docker"], "title": "Offre indeed n°7", "has_compensation": false},
-    {"id": "offer_08", "source": "indeed", "is_apprenticeship": false, "accessible_disability": false, "publishable": false, "required_skills": ["C++", "Python"], "score": 0.4, "coverage": 0.5, "matched": ["Python"], "gaps": ["C++"], "title": "Offre indeed n°8", "has_compensation": false},
-    {"id": "offer_09", "source": "indeed", "is_apprenticeship": false, "accessible_disability": false, "publishable": false, "required_skills": ["Java", "Spring Boot", "C#/.NET", "Angular", "React", "PHP", "Git", "Automated testing"], "score": 0.4, "coverage": 0.625, "matched": ["Java", "Spring Boot", "Angular", "Git", "Automated testing"], "gaps": ["C#/.NET", "React", "PHP"], "title": "Offre indeed n°9", "has_compensation": false},
-    {"id": "offer_10", "source": "indeed", "is_apprenticeship": false, "accessible_disability": false, "publishable": false, "required_skills": ["Java", "Spring Boot", "Angular", "React", "JavaScript", "CI/CD", "Agile", "Automated testing"], "score": 0.4, "coverage": 0.625, "matched": ["Java", "Spring Boot", "Angular", "CI/CD", "Automated testing"], "gaps": ["React", "JavaScript", "Agile"], "title": "Offre indeed n°10", "has_compensation": true},
-    {"id": "offer_11", "source": "indeed", "is_apprenticeship": false, "accessible_disability": false, "publishable": false, "required_skills": ["Java", "Spring Boot", "Kotlin", "Angular", "JavaScript", "HTML/CSS", "C++", "C#/.NET", "CI/CD", "Git", "Automated testing", "English"], "score": 0.383, "coverage": 0.583, "matched": ["Java", "Spring Boot", "Angular", "CI/CD", "Git", "Automated testing", "English"], "gaps": ["Kotlin", "JavaScript", "HTML/CSS", "C++", "C#/.NET"], "title": "Offre indeed n°11", "has_compensation": true},
-    {"id": "offer_12", "source": "indeed", "is_apprenticeship": false, "accessible_disability": false, "publishable": false, "required_skills": ["Java", "Spring Boot", "Kafka", "Angular", "Scala", "Spark", "Hadoop", "Elasticsearch", "English"], "score": 0.378, "coverage": 0.556, "matched": ["Java", "Spring Boot", "Kafka", "Angular", "English"], "gaps": ["Scala", "Spark", "Hadoop", "Elasticsearch"], "title": "Offre indeed n°12", "has_compensation": false},
-    {"id": "offer_13", "source": "indeed", "is_apprenticeship": false, "accessible_disability": false, "publishable": false, "required_skills": ["SQL", "SQL Server", "MySQL", "Python", "HTML/CSS", "JavaScript", "LLM integration", "API REST"], "critique_note": "'0,10€ par mois' is in the posting text but is not a real figure (legal minimum ~4.35€/h): rejected at review", "score": 0.275, "coverage": 0.375, "matched": ["Python", "LLM integration", "API REST"], "gaps": ["SQL", "SQL Server", "MySQL", "HTML/CSS", "JavaScript"], "title": "Offre indeed n°13", "has_compensation": false},
-    {"id": "offer_14", "source": "indeed", "is_apprenticeship": false, "accessible_disability": false, "publishable": false, "required_skills": ["Data visualization", "SQL", "Statistics", "Machine learning"], "score": 0.15, "coverage": 0.25, "matched": ["Data visualization"], "gaps": ["SQL", "Statistics", "Machine learning"], "title": "Offre indeed n°14", "has_compensation": true},
-    {"id": "offer_15", "source": "indeed", "is_apprenticeship": false, "accessible_disability": false, "publishable": false, "required_skills": ["HTML/CSS", "JavaScript", "PHP", "Symfony", "MySQL", "WordPress", "Agile"], "score": 0.0, "coverage": 0.0, "matched": [], "gaps": ["HTML/CSS", "JavaScript", "PHP", "Symfony", "MySQL", "WordPress", "Agile"], "title": "Offre indeed n°15", "has_compensation": true}
+    {
+      "id": "adzuna_5968885991",
+      "source": "adzuna",
+      "title": "Stage : STAGE - INGENIEUR INFORMATIQUE PHYTON F/H",
+      "company": "SAFRAN",
+      "location": "Rue, Abbeville",
+      "url": "https://www.adzuna.fr/details/5968885991?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-17",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Python"
+      ],
+      "responsibilities": [],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "critique_note": "Titre écrit 'PHYTON' : normalisé en 'Python' à la relecture (une égalité exacte l'aurait raté)",
+      "score": 0.8,
+      "coverage": 1.0,
+      "matched": [
+        "Python"
+      ],
+      "gaps": []
+    },
+    {
+      "id": "adzuna_5965499517",
+      "source": "adzuna",
+      "title": "STAGE - Automatisation du déploiement logiciel sur moyens d'essais - F/H",
+      "company": "THALES",
+      "location": "Limours, Palaiseau",
+      "url": "https://www.adzuna.fr/details/5965499517?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-14",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "CI/CD"
+      ],
+      "responsibilities": [
+        "Automatiser le déploiement logiciel sur moyens d'essais"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.6,
+      "coverage": 1.0,
+      "matched": [
+        "CI/CD"
+      ],
+      "gaps": []
+    },
+    {
+      "id": "adzuna_5971846639",
+      "source": "adzuna",
+      "title": "STAGE - Ingénieur DevOps - Conteneurisation, automatisation des tests Docker et CI-CD - F/H",
+      "company": "Thales",
+      "location": "Cholet, Maine-et-Loire",
+      "url": "https://www.adzuna.fr/details/5971846639?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-19",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Docker",
+        "CI/CD",
+        "Automated testing"
+      ],
+      "responsibilities": [
+        "Conteneurisation",
+        "Automatisation des tests Docker et CI-CD"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.4,
+      "coverage": 0.667,
+      "matched": [
+        "CI/CD",
+        "Automated testing"
+      ],
+      "gaps": [
+        "Docker"
+      ]
+    },
+    {
+      "id": "adzuna_5965471231",
+      "source": "adzuna",
+      "title": "STAGE - Automatisation des tests applicatifs par l'IA - F/H",
+      "company": "THALES",
+      "location": "Vélizy-Villacoublay, Versailles",
+      "url": "https://www.adzuna.fr/details/5965471231?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-14",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Automated testing",
+        "Artificial intelligence"
+      ],
+      "responsibilities": [
+        "Automatiser les tests applicatifs par l'IA"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.3,
+      "coverage": 0.5,
+      "matched": [
+        "Automated testing"
+      ],
+      "gaps": [
+        "Artificial intelligence"
+      ]
+    },
+    {
+      "id": "adzuna_5971840939",
+      "source": "adzuna",
+      "title": "Technicien informatique - Stage",
+      "company": "Vulcania",
+      "location": "Pontgibaud, Riom",
+      "url": "https://www.adzuna.fr/details/5971840939?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-19",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [],
+      "responsibilities": [],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "critique_note": "Extrait Adzuna = présentation de l'entreprise : aucune compétence nommée",
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": []
+    },
+    {
+      "id": "adzuna_5971242287",
+      "source": "adzuna",
+      "title": "Stage en informatique H/F (92)",
+      "company": "AKTISEA",
+      "location": "Suresnes, Nanterre",
+      "url": "https://www.adzuna.fr/details/5971242287?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-19",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [],
+      "responsibilities": [],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "critique_note": "Extrait = présentation de l'entreprise adaptée : aucune compétence nommée",
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": []
+    },
+    {
+      "id": "adzuna_5971230478",
+      "source": "adzuna",
+      "title": "STAGE - Ingénieur Développement Logiciel - F/H (Stage)",
+      "company": "THALES SA",
+      "location": "Châtellerault-Nord, Châtellerault",
+      "url": "https://www.adzuna.fr/details/5971230478?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-19",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [],
+      "responsibilities": [],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "critique_note": "Extrait = politique RSE de Thales : 'développement logiciel' n'est pas un outil nommé",
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": []
+    },
+    {
+      "id": "adzuna_5970989855",
+      "source": "adzuna",
+      "title": "Alternance - Stage - Informatique Industrielle H/F",
+      "company": "Dior",
+      "location": "France",
+      "url": "https://www.adzuna.fr/details/5970989855?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-19",
+      "is_apprenticeship": true,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [],
+      "responsibilities": [
+        "Fiabilité et sécurité des systèmes industriels et informatiques du site"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": "492–1823 € (champ salaire Adzuna)",
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": []
+    },
+    {
+      "id": "adzuna_5970805307",
+      "source": "adzuna",
+      "title": "Stage Data Science – Revenue Management / Prédiction de la demande et optimisation de l'overbooking F/H",
+      "company": "AirFrance",
+      "location": "Val-d'Oise, Ile-de-France",
+      "url": "https://www.adzuna.fr/details/5970805307?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-18",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Data science"
+      ],
+      "responsibilities": [
+        "Prévision de la demande",
+        "Optimisation de l'overbooking"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": [
+        "Data science"
+      ]
+    },
+    {
+      "id": "adzuna_5970563236",
+      "source": "adzuna",
+      "title": "Stage de fin d'études – Ingénieur Informatique : Développement, Data & Gouvernance SI F/H",
+      "company": "Dalkia",
+      "location": "Courbevoie, Nanterre",
+      "url": "https://www.adzuna.fr/details/5970563236?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-18",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [],
+      "responsibilities": [],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "critique_note": "Extrait = présentation de Dalkia : aucune compétence nommée",
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": []
+    },
+    {
+      "id": "adzuna_5970391866",
+      "source": "adzuna",
+      "title": "Stage Informatique : Exploitation de données de flux Supply Chain F/H",
+      "company": "MBDA",
+      "location": "Saint-Doulchard, Bourges",
+      "url": "https://www.adzuna.fr/details/5970391866?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-18",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Data warehouse"
+      ],
+      "responsibilities": [
+        "Analyser et optimiser l'exploitation des données de flux"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": [
+        "Data warehouse"
+      ]
+    },
+    {
+      "id": "adzuna_5970315370",
+      "source": "adzuna",
+      "title": "Stage Technicien(e) Digitalisation industrielle H/F",
+      "company": "Chantiers de l'Atlantique",
+      "location": "Montoir-de-Bretagne, Saint-Nazaire",
+      "url": "https://www.adzuna.fr/details/5970315370?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-18",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [],
+      "responsibilities": [
+        "Accompagner les équipes dans l'utilisation des outils informatiques"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": []
+    },
+    {
+      "id": "adzuna_5970112087",
+      "source": "adzuna",
+      "title": "Stage : Stagiaire (h/f) - SI/SERVICES - DEVELOPPEMENT",
+      "company": "SFR",
+      "location": "Bron, Lyon",
+      "url": "https://www.adzuna.fr/details/5970112087?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-18",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [],
+      "responsibilities": [],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "critique_note": "'IA, data, cloud, cybersécurité' décrivent l'entreprise SFR, pas le stage : NON extraits",
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": []
+    },
+    {
+      "id": "adzuna_5970112016",
+      "source": "adzuna",
+      "title": "Stage : Stage – mise en place d'outils informatiques adaptés au service métier F/H",
+      "company": "Safran",
+      "location": "Saint-Pierre-Eglise, Cherbourg-Octeville",
+      "url": "https://www.adzuna.fr/details/5970112016?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-18",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [],
+      "responsibilities": [],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "critique_note": "Extrait = présentation de Safran : aucune compétence nommée",
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": []
+    },
+    {
+      "id": "adzuna_5969730978",
+      "source": "adzuna",
+      "title": "Analyste IT Commando Fixed Income",
+      "company": "Crédit Agricole CIB",
+      "location": "Montrouge, Antony",
+      "url": "https://www.adzuna.fr/details/5969730978?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-18",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Finance"
+      ],
+      "responsibilities": [
+        "Améliorer les processus de pricing",
+        "Méthodes de génération de risques"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": [
+        "Finance"
+      ]
+    },
+    {
+      "id": "adzuna_5969239524",
+      "source": "adzuna",
+      "title": "CS27 - Stage - BAC5 - Ingénieur IA appliquée au PLM (H/F)",
+      "company": "Renault Group",
+      "location": "France",
+      "url": "https://www.adzuna.fr/details/5969239524?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-17",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Artificial intelligence",
+        "PLM"
+      ],
+      "responsibilities": [],
+      "experience_required": "BAC5 (titre)",
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": [
+        "Artificial intelligence",
+        "PLM"
+      ]
+    },
+    {
+      "id": "adzuna_5969192463",
+      "source": "adzuna",
+      "title": "STAGE - Ingénieur IA & Cybersécurité – Plateforme de Threat Intelligence de Nouvelle Génération - F/H",
+      "company": "THALES",
+      "location": "Palaiseau, Essonne",
+      "url": "https://www.adzuna.fr/details/5969192463?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-17",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Artificial intelligence",
+        "Cybersecurity"
+      ],
+      "responsibilities": [
+        "Plateforme de threat intelligence"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": [
+        "Artificial intelligence",
+        "Cybersecurity"
+      ]
+    },
+    {
+      "id": "adzuna_5969147779",
+      "source": "adzuna",
+      "title": "Ingénieur(e) IA et vision par ordinateur - Stage H/F (Stage)",
+      "company": "CAPGEMINI FRANCE",
+      "location": "Issy-les-Moulineaux, Boulogne-Billancourt",
+      "url": "https://www.adzuna.fr/details/5969147779?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-17",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Computer vision",
+        "OCR",
+        "Artificial intelligence"
+      ],
+      "responsibilities": [
+        "Analyser des schémas de procédés industriels",
+        "Alimenter un jumeau numérique"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": [
+        "Computer vision",
+        "OCR",
+        "Artificial intelligence"
+      ]
+    },
+    {
+      "id": "adzuna_5967021613",
+      "source": "adzuna",
+      "title": "Stage – Ingénieur Intelligence artificielle Safety et contrôle des Défaillances spatiales – (H/F)",
+      "company": "Thales",
+      "location": "Cannes, Grasse",
+      "url": "https://www.adzuna.fr/details/5967021613?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-15",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Artificial intelligence"
+      ],
+      "responsibilities": [
+        "Safety et contrôle des défaillances spatiales"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": [
+        "Artificial intelligence"
+      ]
+    },
+    {
+      "id": "adzuna_5966090560",
+      "source": "adzuna",
+      "title": "Stage : Ingénieur électronique informatique F/M",
+      "company": "Thales",
+      "location": " Gémenos, La Ciotat",
+      "url": "https://www.adzuna.fr/details/5966090560?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-14",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Electronics"
+      ],
+      "responsibilities": [],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": [
+        "Electronics"
+      ]
+    },
+    {
+      "id": "adzuna_5966071446",
+      "source": "adzuna",
+      "title": "Stage Outil de conception génératif pour le renfort métallique (F/H) – Clermont-Fd",
+      "company": "Michelin",
+      "location": "Clermont-Ferrand, Puy-de-Dôme",
+      "url": "https://www.adzuna.fr/details/5966071446?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-14",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [],
+      "responsibilities": [
+        "Créer un outil de conception générative pour le renfort métallique"
+      ],
+      "experience_required": "BAC5",
+      "compensation_mentioned": null,
+      "critique_note": "'conception générative' = design paramétrique, PAS de l'IA générative : non converti en 'LLM integration'",
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": []
+    },
+    {
+      "id": "adzuna_5965499347",
+      "source": "adzuna",
+      "title": "Stage – Ingénieur Développeur de Solutions Numériques Web Full Stack pour la digitalisation des activités industrielles – (H/F)",
+      "company": "THALES",
+      "location": "Cannes, Grasse",
+      "url": "https://www.adzuna.fr/details/5965499347?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-14",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Full stack web"
+      ],
+      "responsibilities": [
+        "Développer des solutions numériques web full stack"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": [
+        "Full stack web"
+      ]
+    },
+    {
+      "id": "adzuna_5965497501",
+      "source": "adzuna",
+      "title": "Stage - Développeur d'outils informatiques et numériques F/H",
+      "company": "RTE - Réseau de transport d'électricité",
+      "location": "Marseille, Bouches-du-Rhône",
+      "url": "https://www.adzuna.fr/details/5965497501?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-14",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [],
+      "responsibilities": [
+        "Développer des outils informatiques et numériques"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": []
+    },
+    {
+      "id": "adzuna_5965491854",
+      "source": "adzuna",
+      "title": "STAGE - Ingénieur Validation Vérification et Intégration d'un système industriel critique - H/F",
+      "company": "THALES",
+      "location": "Bordeaux, Gironde",
+      "url": "https://www.adzuna.fr/details/5965491854?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-14",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Validation & verification"
+      ],
+      "responsibilities": [
+        "Valider, vérifier et intégrer un système industriel critique"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": [
+        "Validation & verification"
+      ]
+    },
+    {
+      "id": "adzuna_5965491107",
+      "source": "adzuna",
+      "title": "STAGE - Ingénieur informatique industrielle Environnement essais -F/H",
+      "company": "THALES",
+      "location": "Toulouse, Haute-Garonne",
+      "url": "https://www.adzuna.fr/details/5965491107?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-14",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Industrial computing"
+      ],
+      "responsibilities": [],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": [
+        "Industrial computing"
+      ]
+    },
+    {
+      "id": "adzuna_5965486157",
+      "source": "adzuna",
+      "title": "STAGE - Analyse intelligente et détection d'incohérences dans des données hétérogènes - F / H",
+      "company": "THALES",
+      "location": "Vélizy-Villacoublay, Versailles",
+      "url": "https://www.adzuna.fr/details/5965486157?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-14",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Data analysis"
+      ],
+      "responsibilities": [
+        "Détecter des incohérences dans des données hétérogènes"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": [
+        "Data analysis"
+      ]
+    },
+    {
+      "id": "adzuna_5965486197",
+      "source": "adzuna",
+      "title": "STAGE - Développement d'outils d'automatisation et d'optimisation des processus de développement - F / H",
+      "company": "THALES",
+      "location": "Vélizy-Villacoublay, Versailles",
+      "url": "https://www.adzuna.fr/details/5965486197?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-14",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [],
+      "responsibilities": [
+        "Automatiser et optimiser les processus de développement"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "critique_note": "Aucun outil nommé (extrait = présentation de Thales)",
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": []
+    },
+    {
+      "id": "adzuna_5965485620",
+      "source": "adzuna",
+      "title": "STAGE - Ingénieure / Ingénieur en Informatique Industrielle / Automatisme - Data Science et Data Management IA",
+      "company": "ArianeGroup",
+      "location": "Saint-Médard-en-Jalles, Bordeaux",
+      "url": "https://www.adzuna.fr/details/5965485620?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-14",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Data science",
+        "Artificial intelligence",
+        "Industrial automation"
+      ],
+      "responsibilities": [],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": [
+        "Data science",
+        "Artificial intelligence",
+        "Industrial automation"
+      ]
+    },
+    {
+      "id": "adzuna_5965483232",
+      "source": "adzuna",
+      "title": "STAGE - Ingénieur informatique industrielle - H/F",
+      "company": "THALES",
+      "location": "Bordeaux, Gironde",
+      "url": "https://www.adzuna.fr/details/5965483232?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-14",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Industrial computing"
+      ],
+      "responsibilities": [],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": [
+        "Industrial computing"
+      ]
+    },
+    {
+      "id": "adzuna_5965479254",
+      "source": "adzuna",
+      "title": "STAGE - Serveur NAS et synchronisation des machines de test - F/H",
+      "company": "THALES",
+      "location": "Rouen, Seine-Maritime",
+      "url": "https://www.adzuna.fr/details/5965479254?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-14",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [
+        "Systems administration"
+      ],
+      "responsibilities": [
+        "Serveur NAS",
+        "Synchronisation des machines de test"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": [
+        "Systems administration"
+      ]
+    },
+    {
+      "id": "adzuna_5965479085",
+      "source": "adzuna",
+      "title": "Stage Ingénieur Développement, Automatisation outils informatiques – (H/F)",
+      "company": "THALES",
+      "location": "Cannes, Grasse",
+      "url": "https://www.adzuna.fr/details/5965479085?utm_medium=api&utm_source=e67d8138",
+      "date_posted": "2026-11-14",
+      "is_apprenticeship": false,
+      "accessible_disability": false,
+      "publishable": true,
+      "required_skills": [],
+      "responsibilities": [
+        "Développement et automatisation d'outils informatiques"
+      ],
+      "experience_required": null,
+      "compensation_mentioned": null,
+      "score": 0.0,
+      "coverage": 0.0,
+      "matched": [],
+      "gaps": []
+    }
   ],
-  "generated_at": "2026-11-10T21:29:00Z",
-  "n_offers": 15,
-  "offers_per_source": {"indeed": 15},
-  "top_skill_gaps": [{"skill": "JavaScript", "count": 6}, {"skill": "Agile", "count": 4}, {"skill": "SQL", "count": 4}, {"skill": "HTML/CSS", "count": 4}, {"skill": "Maven", "count": 2}, {"skill": "Machine learning", "count": 2}, {"skill": "C++", "count": 2}, {"skill": "C#/.NET", "count": 2}, {"skill": "React", "count": 2}, {"skill": "PHP", "count": 2}],
-  "top_matched_skills": [{"skill": "Automated testing", "count": 7, "level": 3}, {"skill": "Java", "count": 7, "level": 4}, {"skill": "Spring Boot", "count": 7, "level": 4}, {"skill": "Python", "count": 6, "level": 4}, {"skill": "English", "count": 6, "level": 4}, {"skill": "Angular", "count": 6, "level": 2}, {"skill": "CI/CD", "count": 6, "level": 3}, {"skill": "Git", "count": 6, "level": 3}, {"skill": "API REST", "count": 4, "level": 4}, {"skill": "LLM integration", "count": 3, "level": 3}],
-  "n_offers_with_compensation": 5
+  "top_skill_gaps": [
+    {
+      "skill": "Artificial intelligence",
+      "count": 6
+    },
+    {
+      "skill": "Data science",
+      "count": 2
+    },
+    {
+      "skill": "Industrial computing",
+      "count": 2
+    },
+    {
+      "skill": "Docker",
+      "count": 1
+    },
+    {
+      "skill": "Data warehouse",
+      "count": 1
+    },
+    {
+      "skill": "Finance",
+      "count": 1
+    },
+    {
+      "skill": "PLM",
+      "count": 1
+    },
+    {
+      "skill": "Cybersecurity",
+      "count": 1
+    },
+    {
+      "skill": "Computer vision",
+      "count": 1
+    },
+    {
+      "skill": "OCR",
+      "count": 1
+    }
+  ],
+  "top_matched_skills": [
+    {
+      "skill": "CI/CD",
+      "count": 2,
+      "level": 3
+    },
+    {
+      "skill": "Automated testing",
+      "count": 2,
+      "level": 3
+    },
+    {
+      "skill": "Python",
+      "count": 1,
+      "level": 4
+    }
+  ],
+  "n_offers_with_compensation": 1,
+  "n_offers_with_skills": 19,
+  "pipeline": {
+    "fetched": 50,
+    "duplicates_removed": 10,
+    "out_of_scope_removed": 9,
+    "kept": 31,
+    "with_skills": 19,
+    "out_of_scope_reasons": [
+      "automatisme, hors informatique",
+      "conducteur de lignes, hors informatique",
+      "formation en alternance (pas un stage)",
+      "mission d'intérim, pas un stage",
+      "physique médicale, hors informatique"
+    ],
+    "note": "Adzuna (plan gratuit) ne renvoie qu'un extrait de 500 caractères par offre ; extraction faite par Claude (rôle d'Ollama, prompt de extract_offers.py), uniquement sur le titre + l'extrait, sans rien déduire."
+  }
 }
