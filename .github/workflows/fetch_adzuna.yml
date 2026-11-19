@@ -1,0 +1,31 @@
+name: Fetch Adzuna offers (manual)
+
+# Manual only: Adzuna's free plan has a limited number of calls.
+# Instructor's rule: no scheduling, refresh at most once a week.
+"on":
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Fetch Adzuna offers
+        run: python scripts/fetch_offers_adzuna.py
+        env:
+          ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
+          ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
+      - name: Commit offers
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/offers/adzuna_offers.json
+          git commit -m "Fetch Adzuna offers [manual]" || echo "Nothing to commit"
+          git push
