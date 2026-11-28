@@ -270,6 +270,22 @@
         "R1 adzuna_5965499517: good match (0.6) still not applied after 8 days"
       ],
       "status": "ALERT"
+    },
+    {
+      "run_at": "2026-11-28T16:54:41Z",
+      "trigger": "schedule",
+      "tracked": 3,
+      "status_counts": {
+        "to_apply": 3
+      },
+      "applications_sent": 0,
+      "response_rate_pct": null,
+      "good_matches_available": 2,
+      "alerts": [
+        "R1 adzuna_5968885991: good match (0.8) still not applied after 9 days",
+        "R1 adzuna_5965499517: good match (0.6) still not applied after 9 days"
+      ],
+      "status": "ALERT"
     }
   ]
 }
